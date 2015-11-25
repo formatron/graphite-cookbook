@@ -20,6 +20,12 @@ root_firstname = node['formatron_graphite']['root_firstname']
 root_lastname = node['formatron_graphite']['root_lastname']
 root_password = node['formatron_graphite']['root_password']
 root_email = node['formatron_graphite']['root_email']
+ldap_server = node['formatron_graphite']['ldap_server']
+ldap_port = node['formatron_graphite']['ldap_port']
+ldap_search_base = node['formatron_graphite']['ldap_search_base']
+ldap_bind_dn = node['formatron_graphite']['ldap_bind_dn']
+ldap_bind_password = node['formatron_graphite']['ldap_bind_password']
+ldap_uid = node['formatron_graphite']['ldap_uid']
 
 package 'graphite-carbon'
 package 'graphite-web'
@@ -47,6 +53,12 @@ initial_data = File.join graphite_dir, 'initial_data.json'
 
 template settings do
   variables(
+    ldap_server: ldap_server,
+    ldap_port: ldap_port,
+    ldap_search_base: ldap_search_base,
+    ldap_bind_dn: ldap_bind_dn,
+    ldap_bind_password: ldap_bind_password,
+    ldap_uid: ldap_uid,
     secret_key: secret_key,
     timezone: timezone,
     name: database_name,
