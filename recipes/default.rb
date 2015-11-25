@@ -38,12 +38,6 @@ file '/etc/default/graphite-carbon' do
   content 'CARBON_CACHE_ENABLED=true'
 end
 
-template '/etc/carbon/carbon.conf' do
-  variables(
-    hostname hostname
-  )
-end
-
 cookbook_file '/etc/carbon/carbon.conf'
 cookbook_file '/etc/carbon/storage-aggregation.conf'
 
@@ -54,7 +48,7 @@ end
 
 template '/etc/apache2/sites-available/graphite.conf' do
   variables(
-    hostname hostname
+    hostname: hostname
   )
 end
 
