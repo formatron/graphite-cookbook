@@ -39,9 +39,12 @@ file '/etc/default/graphite-carbon' do
 end
 
 template '/etc/carbon/carbon.conf' do
-  hostname hostname
+  variables(
+    hostname hostname
+  )
 end
 
+cookbook_file '/etc/carbon/carbon.conf'
 cookbook_file '/etc/carbon/storage-aggregation.conf'
 
 service 'carbon-cache' do
@@ -49,7 +52,11 @@ service 'carbon-cache' do
   action [ :enable, :start ]
 end
 
-cookbook_file '/etc/apache2/sites-available/graphite.conf'
+template '/etc/apache2/sites-available/graphite.conf' do
+  variables(
+    hostname hostname
+  )
+end
 
 graphite_dir = '/etc/graphite'
 settings = File.join graphite_dir, 'local_settings.py'
