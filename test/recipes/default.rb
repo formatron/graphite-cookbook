@@ -9,6 +9,7 @@ include_recipe 'apache2::mod_wsgi'
 node.override['formatron_postgresql']['postgres_password'] = postgres_password
 include_recipe 'formatron_postgresql::default'
 
+node.override['formatron_graphite']['hostname'] = 'localhost'
 node.override['formatron_graphite']['secret'] = 'secret'
 node.override['formatron_graphite']['timezone'] = 'Europe/Amsterdam'
 node.override['formatron_graphite']['postgresql']['user'] = 'postgres'
