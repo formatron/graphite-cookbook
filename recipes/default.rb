@@ -4,7 +4,7 @@ end
 
 require 'time'
 require 'securerandom'
-require 'pbkdf256'
+require 'pbkdf2'
 
 hostname = node['formatron_graphite']['hostname']
 secret_key = node['formatron_graphite']['secret_key']
@@ -79,7 +79,13 @@ root_created_time =
     Time.now.utc.xmlschema(3).chomp('Z')
 root_password_hash_iterations = 12000
 root_password_salt = SecureRandom.random_number(36**12).to_s 36
-root_password_hash = Base64.encode64 PBKDF256.dk(root_password, root_password_salt, root_password_hash_iterations, 32)
+root_password_hash = Base64.encode64 PBKDF2.new(
+  password: root_password,
+  salt: root_password_salt,
+  iterations: root_password_hash_iterations,
+  hash_function: :sha256,
+  key_length: 32
+)
 root_password_field =
   node['formatron_graphite']['root_password_field'] ||
   node.set['formatron_graphite']['root_password_field'] =
