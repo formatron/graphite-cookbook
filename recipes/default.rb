@@ -86,7 +86,7 @@ root_password_hash = Base64.encode64 PBKDF2.new(
   iterations: root_password_hash_iterations,
   hash_function: :sha256,
   key_length: 32
-)
+).value
 root_password_field =
   node['formatron_graphite']['root_password_field'] ||
   node.set['formatron_graphite']['root_password_field'] =
