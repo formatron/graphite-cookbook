@@ -1,3 +1,4 @@
+default['formatron_graphite']['hostname'] = node['fqdn']
 default['formatron_graphite']['secret_key'] = 'changeme'
 default['formatron_graphite']['timezone'] = 'Europe/Amsterdam'
 default['formatron_graphite']['postgresql']['user'] = 'postgres'

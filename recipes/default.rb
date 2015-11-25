@@ -6,6 +6,7 @@ require 'time'
 require 'securerandom'
 require 'pbkdf256'
 
+hostname = node['formatron_graphite']['hostname']
 secret_key = node['formatron_graphite']['secret_key']
 timezone = node['formatron_graphite']['timezone']
 postgres_user = node['formatron_graphite']['postgresql']['user']
@@ -37,7 +38,10 @@ file '/etc/default/graphite-carbon' do
   content 'CARBON_CACHE_ENABLED=true'
 end
 
-cookbook_file '/etc/carbon/carbon.conf'
+template '/etc/carbon/carbon.conf' do
+  hostname hostname
+end
+
 cookbook_file '/etc/carbon/storage-aggregation.conf'
 
 service 'carbon-cache' do
