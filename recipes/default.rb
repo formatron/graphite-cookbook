@@ -1,4 +1,4 @@
-chef_gem 'pbkdf256' do
+chef_gem 'pbkdf2' do
   compile_time true
 end
 
