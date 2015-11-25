@@ -1,0 +1,7 @@
+name 'test'
+version '0.1.0'
+supports 'ubuntu'
+depends 'apt'
+depends 'apache2'
+depends 'formatron_postgresql'
+depends 'formatron_graphite'
