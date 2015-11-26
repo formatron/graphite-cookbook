@@ -5,7 +5,6 @@ chef_gem 'pbkdf256' do
 end
 
 require 'time'
-require 'openssl'
 require 'pbkdf256'
 
 hostname = node['formatron_graphite']['hostname']
@@ -81,7 +80,7 @@ root_created_time =
   node.set['formatron_graphite']['root_created_time'] =
     Time.now.utc.xmlschema(3).chomp('Z')
 root_password_hash_iterations = 12000
-root_password_salt = OpenSSL::Random.random_bytes 16
+root_password_salt = SecureRandom.random_number(36**12).to_s 36
 root_password_hash = Base64.encode64 PBKDF256.dk(
   root_password,
   root_password_salt,
