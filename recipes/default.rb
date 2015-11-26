@@ -1,10 +1,12 @@
-chef_gem 'pbkdf2' do
+node.override['build-essential']['compile_time'] = true
+include_recipe 'build-essential::default'
+chef_gem 'pbkdf256' do
   compile_time true
 end
 
 require 'time'
-require 'securerandom'
-require 'pbkdf2'
+require 'openssl'
+require 'pbkdf256'
 
 hostname = node['formatron_graphite']['hostname']
 secret_key = node['formatron_graphite']['secret_key']
@@ -79,14 +81,13 @@ root_created_time =
   node.set['formatron_graphite']['root_created_time'] =
     Time.now.utc.xmlschema(3).chomp('Z')
 root_password_hash_iterations = 12000
-root_password_salt = SecureRandom.random_number(36**12).to_s 36
-root_password_hash = Base64.encode64 PBKDF2.new(
-  password: root_password,
-  salt: root_password_salt,
-  iterations: root_password_hash_iterations,
-  hash_function: :sha256,
-  key_length: 32
-).value
+root_password_salt = OpenSSL::Random.random_bytes 16
+root_password_hash = Base64.encode64 PBKDF256.dk(
+  root_password,
+  root_password_salt,
+  root_password_hash_iterations,
+  32
+)
 root_password_field =
   node['formatron_graphite']['root_password_field'] ||
   node.set['formatron_graphite']['root_password_field'] =
