@@ -76,8 +76,8 @@ template settings do
 end
 
 root_created_time =
-  node['formatron_graphite']['root_created_time'] ||
-  node.set['formatron_graphite']['root_created_time'] =
+  node['formatron_graphite_root_created_time'] ||
+  node.set['formatron_graphite_root_created_time'] =
     Time.now.utc.xmlschema(3).chomp('Z')
 root_password_hash_iterations = 12000
 root_password_salt = SecureRandom.random_number(36**12).to_s 36
@@ -88,8 +88,8 @@ root_password_hash = Base64.encode64 PBKDF256.dk(
   32
 )
 root_password_field =
-  node['formatron_graphite']['root_password_field'] ||
-  node.set['formatron_graphite']['root_password_field'] =
+  node['formatron_graphite_root_password_field'] ||
+  node.set['formatron_graphite_root_password_field'] =
     "pbkdf2_sha256$#{root_password_hash_iterations}$#{root_password_salt}$#{root_password_hash}".chomp
 template initial_data do
   variables(  
