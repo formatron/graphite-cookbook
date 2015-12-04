@@ -1,12 +1,3 @@
-node.override['build-essential']['compile_time'] = true
-include_recipe 'build-essential::default'
-chef_gem 'pbkdf256' do
-  compile_time true
-end
-
-require 'time'
-require 'pbkdf256'
-
 hostname = node['formatron_graphite']['hostname']
 secret_key = node['formatron_graphite']['secret_key']
 timezone = node['formatron_graphite']['timezone']
@@ -75,32 +66,17 @@ template settings do
   )
 end
 
-root_created_time =
-  node['formatron_graphite_root_created_time'] ||
-  node.set['formatron_graphite_root_created_time'] =
-    Time.now.utc.xmlschema(3).chomp('Z')
-root_password_hash_iterations = 12000
-root_password_salt = SecureRandom.random_number(36**12).to_s 36
-root_password_hash = Base64.encode64 PBKDF256.dk(
-  root_password,
-  root_password_salt,
-  root_password_hash_iterations,
-  32
-)
-root_password_field =
-  node['formatron_graphite_root_password_field'] ||
-  node.set['formatron_graphite_root_password_field'] =
-    "pbkdf2_sha256$#{root_password_hash_iterations}$#{root_password_salt}$#{root_password_hash}".chomp
-template initial_data do
-  variables(  
-    root_user: root_user,
-    root_firstname: root_firstname,
-    root_lastname: root_lastname,
-    last_login: root_created_time,
-    root_password_field: root_password_field,
-    root_email: root_email,
-    date_joined: root_created_time
-  )
+include_recipe 'build-essential::default'
+chef_gem 'pbkdf256' do
+  compile_time false
+end
+
+formatron_graphite_initial_data initial_data do
+  user root_user
+  firstname root_firstname
+  lastname root_lastname
+  password root_password
+  email root_email
 end
 
 include_recipe 'database::postgresql'
