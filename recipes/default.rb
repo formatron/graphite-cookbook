@@ -79,8 +79,6 @@ formatron_graphite_initial_data initial_data do
   email root_email
 end
 
-include_recipe 'database::postgresql'
-
 postgresql_connection_info = {
   host: database_host,
   port: database_port,
@@ -95,16 +93,14 @@ postgresql_connection_info_graphite = {
   password: database_password
 }
 
-postgresql_database_user database_user do
+formatron_postgresql_user database_user do
   connection postgresql_connection_info
   password database_password
-  createdb true
-  action :create
+  create_db true
 end
 
-postgresql_database database_name do
+formatron_postgresql_database database_name do
   connection postgresql_connection_info_graphite
-  action :create
   notifies :run, "bash[init_db]", :immediately
 end
 
