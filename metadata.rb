@@ -1,5 +1,8 @@
 name 'formatron_graphite'
 version '0.1.0'
+description 'Formatron Graphite cookbook'
+source_url 'https://github.com/formatron/graphite-cookbook'
+issues_url 'https://github.com/formatron/graphite-cookbook/issues'
 supports 'ubuntu'
 depends 'build-essential'
 depends 'formatron_postgresql'
